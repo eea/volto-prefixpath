@@ -23,6 +23,9 @@ SHELL:=bash
 .DELETE_ON_ERROR:
 MAKEFLAGS+=--warn-undefined-variables
 MAKEFLAGS+=--no-builtin-rules
+DOCKER_IMAGE_ACCEPTANCE=plone/server-acceptance:6.0.8
+NODEBIN = ./node_modules/.bin
+
 
 # Colors
 # OK=Green, warn=yellow, error=red
@@ -161,4 +164,28 @@ cypress-ci:
 	$(NODE_MODULES)/.bin/wait-on -t 240000  http://localhost:3000
 	NODE_ENV=development make cypress-run
 
+.PHONY: test-acceptance-headless
+test-acceptance-headless: ## Start Core Cypress Acceptance Tests in headless mode
+	NODE_ENV=production CYPRESS_API=plone $(NODEBIN)/cypress run --config specPattern='cypress/tests/core/**/*.{js,jsx,ts,tsx}'
+
+.PHONY: start-test-acceptance-server test-acceptance-server
+start-test-acceptance-server test-acceptance-server: ## Start Test Acceptance Server Main Fixture (docker container)
+	docker run -i --rm -p 55001:55001 $(DOCKER_IMAGE_ACCEPTANCE)
+######### Prefixed Core Acceptance tests
+
+.PHONY: start-test-acceptance-frontend-prefixed
+start-test-acceptance-frontend-prefixed: ## Start the prefixed Core Acceptance Frontend Fixture
+	RAZZLE_PREFIX_PATH=/foo RAZZLE_API_PATH=http://localhost/foo yarn build && yarn start:prod
+
+.PHONY: full-test-acceptance-prefixed
+full-test-acceptance-prefixed: ## Runs prefixed Core Full Acceptance Testing in headless mode
+	$(NODEBIN)/start-test "make start-test-acceptance-server" http-get://localhost:55001/plone "make start-test-acceptance-frontend-prefixed" http://localhost:3000 "make test-acceptance-headless"
+
+.PHONY: test-acceptance-prefixed
+test-acceptance-prefixed: ## Start Prefixed Cypress Acceptance Tests
+	NODE_ENV=production CYPRESS_API=plone $(NODEBIN)/cypress open --config baseUrl='http://localhost/foo'
+
+.PHONY: start-test-acceptance-webserver-prefixed
+start-test-acceptance-webserver-prefixed: ## Start the prefixed webserver
+	cd docker && docker-compose -f prefixed.yml up
 
