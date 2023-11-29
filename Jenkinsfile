@@ -4,7 +4,7 @@ pipeline {
   }
 
   environment {
-    GIT_NAME = "volto-addon-template"
+    GIT_NAME = "volto-prefixPath"
     NAMESPACE = "@eeacms"
     SONARQUBE_TAGS = "volto.eea.europa.eu"
     DEPENDENCIES = ""
@@ -307,4 +307,6 @@ pipeline {
       }
     }
   }
+}
+}
 }
