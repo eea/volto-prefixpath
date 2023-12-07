@@ -12,6 +12,8 @@ import { flattenToAppURL } from '@plone/volto/helpers';
 import { addPrefixPath } from '@plone/volto/helpers/Url/Url';
 import config from '@plone/volto/registry';
 
+import Image from '@eeacms/volto-prefixpath/components/Image/Image';
+
 /**
  * Image view component class.
  * @function ImageView
@@ -19,7 +21,6 @@ import config from '@plone/volto/registry';
  * @returns {string} Markup of the component.
  */
 const ImageView = ({ content }) => {
-  const Image = config.getComponent({ name: 'Image' }).component;
   const Container =
     config.getComponent({ name: 'Container' }).component || SemanticContainer;
 

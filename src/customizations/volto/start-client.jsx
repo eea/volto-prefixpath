@@ -17,7 +17,7 @@ import configureStore from '@plone/volto/store';
 import { Api, persistAuthToken, ScrollToTop } from '@plone/volto/helpers';
 
 export const history = createBrowserHistory({
-  basename: config.settings.prefixPath,
+  basename: config.settings.prefixPath ?? '/',
 });
 
 function reactIntlErrorHandler(error) {
@@ -58,4 +58,21 @@ export default function client() {
   if (window.env.RAZZLE_LEGACY_TRAVERSE) {
     config.settings.legacyTraverse = true;
   }
+
+  loadableReady(() => {
+    hydrate(
+      <CookiesProvider>
+        <Provider store={store}>
+          <IntlProvider onError={reactIntlErrorHandler}>
+            <ConnectedRouter history={history}>
+              <ScrollToTop>
+                <ReduxAsyncConnect routes={routes} helpers={api} />
+              </ScrollToTop>
+            </ConnectedRouter>
+          </IntlProvider>
+        </Provider>
+      </CookiesProvider>,
+      document.getElementById('main'),
+    );
+  });
 }

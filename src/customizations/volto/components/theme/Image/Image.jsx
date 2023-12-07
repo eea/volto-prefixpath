@@ -1,3 +1,5 @@
+// No Image component in Volto 16. This is for Volto >= 17
+
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { flattenToAppURL } from '@plone/volto/helpers';

@@ -272,7 +272,7 @@ server.get('/*', (req, res) => {
               <StaticRouter
                 context={context}
                 location={req.url}
-                basename={config.settings.prefixPath}
+                basename={config.settings.prefixPath ?? '/'}
               >
                 <ReduxAsyncConnect routes={routes} helpers={api} />
               </StaticRouter>

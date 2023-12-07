@@ -47,23 +47,6 @@ const applyConfig = (config) => {
   }
   if (__SERVER__) {
     const middleware = require('./middleware/prefixPath').default;
-    const express = require('express');
-    const path = require('path');
-    const server = express.Router();
-
-    if (process.env.RAZZLE_PREFIX_PATH) {
-      server.use(
-        process.env.RAZZLE_PREFIX_PATH,
-        express.static(
-          process.env.BUILD_DIR
-            ? path.join(process.env.BUILD_DIR, 'public')
-            : process.env.RAZZLE_PUBLIC_DIR,
-          {
-            redirect: false, // Avoid /my-prefix from being redirected to /my-prefix/
-          },
-        ),
-      );
-    }
 
     config.settings.expressMiddleware = [
       ...config.settings.expressMiddleware,
