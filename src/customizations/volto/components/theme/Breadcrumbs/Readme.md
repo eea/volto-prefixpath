@@ -1,0 +1,1 @@
+The only customization here is the removal of isContentRoute helper from https://github.com/eea/volto-eea-website-theme/blob/bf2707262a3d3bf4d0ab90656e69a1babe8dad54/src/customizations/volto/components/theme/Breadcrumbs/Breadcrumbs.jsx#L16
