@@ -10,7 +10,7 @@ import cx from 'classnames';
 import { withBlockExtensions } from '@plone/volto/helpers';
 import { flattenToAppURL, isInternalURL } from '@plone/volto/helpers';
 
-import Image from '@eeacms/volto-prefixpath/components/Image/Image';
+import Image from '@eeacms/volto-prefixPath/components/Image/Image';
 
 /**
  * View image block class.

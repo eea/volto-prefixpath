@@ -24,7 +24,7 @@ import {
   validateFileUploadSize,
 } from '@plone/volto/helpers';
 
-import Image from '@eeacms/volto-prefixpath/components/Image/Image';
+import Image from '@eeacms/volto-prefixPath/components/Image/Image';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';

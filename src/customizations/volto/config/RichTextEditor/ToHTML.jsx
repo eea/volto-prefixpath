@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { UniversalLink } from '@plone/volto/components';
-import Image from '@eeacms/volto-prefixpath/components/Image/Image';
+import Image from '@eeacms/volto-prefixPath/components/Image/Image';
 
 const styles = {
   code: {
