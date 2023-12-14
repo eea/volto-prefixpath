@@ -45,7 +45,7 @@ const applyConfig = (config) => {
       SystemInfoAsyncPropExtender,
     ];
   }
-  if (__SERVER__) {
+  if (__SERVER__ && !config.settings.isMultilingual) {
     const middleware = require('./middleware/prefixPath').default;
 
     config.settings.expressMiddleware = [
