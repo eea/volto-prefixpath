@@ -13,7 +13,7 @@ export const prefixPath = function (req, res, next) {
 const prefixMiddleware = () => {
   const middleware = express.Router({ strict: true });
 
-  middleware.get('/', prefixPath);
+  middleware.get('/en', prefixPath);
   middleware.id = 'prefixPath';
   return middleware;
 };
