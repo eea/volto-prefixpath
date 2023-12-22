@@ -7,7 +7,7 @@ pipeline {
     GIT_NAME = "volto-prefixPath"
     NAMESPACE = "@eeacms"
     SONARQUBE_TAGS = "volto.eea.europa.eu"
-    DEPENDENCIES = ""
+    DEPENDENCIES = "@eeacms/volto-eea-design-system"
     BACKEND_PROFILES = "eea.kitkat:testing"
     BACKEND_ADDONS = ""
     VOLTO = "16"
@@ -307,6 +307,4 @@ pipeline {
       }
     }
   }
-}
-}
 }
