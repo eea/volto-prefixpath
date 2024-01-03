@@ -10,7 +10,10 @@ const modify = (config, { target, dev }, webpack) => {
       else config.devServer.publicPath += `${prefixPath.slice(1)}/`;
     }
     const pp = config.output.publicPath;
-    config.output.publicPath = `${pp}${prefixPath.slice(1)}/`;
+
+    //check if publicPath already has the prefixPath
+    if (pp.indexOf(prefixPath) === -1)
+      config.output.publicPath = `${pp}${prefixPath.slice(1)}/`;
   }
   return config;
 };
