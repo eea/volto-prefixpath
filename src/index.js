@@ -45,14 +45,15 @@ const applyConfig = (config) => {
       SystemInfoAsyncPropExtender,
     ];
   }
-  if (__SERVER__) {
-    const middleware = require('./middleware/prefixPath').default;
+  //do not require initial re-redirect
+  // if (__SERVER__) {
+  //   const middleware = require('./middleware/prefixPath').default;
 
-    config.settings.expressMiddleware = [
-      ...config.settings.expressMiddleware,
-      middleware(),
-    ];
-  }
+  //   config.settings.expressMiddleware = [
+  //     ...config.settings.expressMiddleware,
+  //     middleware(),
+  //   ];
+  // }
 
   // do not expand breadcrumbs
   config.settings.apiExpanders = [...config.settings.apiExpanders].filter(
