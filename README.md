@@ -1,4 +1,4 @@
-# volto-prefixPath
+# volto-prefixpath
 
 [![Releases](https://img.shields.io/github/v/release/eea/volto-prefixPath)](https://github.com/eea/volto-prefixPath/releases)
 
@@ -13,7 +13,6 @@
 [![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixPath-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixPath-develop)
 [![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixPath-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixPath-develop)
 [![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixPath-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixPath-develop)
-
 
 [Volto](https://github.com/plone/volto) add-on
 
@@ -32,7 +31,7 @@ Demo GIF
 
 Go to http://localhost:3000
 
-### Add volto-prefixPath to your Volto project
+### Add volto-prefixpath to your Volto project
 
 1. Make sure you have a [Plone backend](https://plone.org/download) up-and-running at http://localhost:8080/Plone
 
@@ -42,25 +41,25 @@ Go to http://localhost:3000
 
 1. Start Volto frontend
 
-* If you already have a volto project, just update `package.json`:
+- If you already have a volto project, just update `package.json`:
 
-   ```JSON
-   "addons": [
-       "@eeacms/volto-prefixPath"
-   ],
+  ```JSON
+  "addons": [
+      "@eeacms/volto-prefixpath"
+  ],
 
-   "dependencies": {
-       "@eeacms/volto-prefixPath": "*"
-   }
-   ```
+  "dependencies": {
+      "@eeacms/volto-prefixpath": "*"
+  }
+  ```
 
-* If not, create one:
+- If not, create one:
 
-   ```
-   npm install -g yo @plone/generator-volto
-   yo @plone/volto my-volto-project --canary --addon @eeacms/volto-prefixPath
-   cd my-volto-project
-   ```
+  ```
+  npm install -g yo @plone/generator-volto
+  yo @plone/volto my-volto-project --canary --addon @eeacms/volto-prefixpath
+  cd my-volto-project
+  ```
 
 1. Install new add-ons and restart Volto:
 
