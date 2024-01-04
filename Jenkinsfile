@@ -4,7 +4,7 @@ pipeline {
   }
 
   environment {
-    GIT_NAME = "volto-prefixPath"
+    GIT_NAME = "volto-prefixpath"
     NAMESPACE = "@eeacms"
     SONARQUBE_TAGS = "volto.eea.europa.eu"
     DEPENDENCIES = "@eeacms/volto-eea-design-system"
