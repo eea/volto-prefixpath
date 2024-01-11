@@ -19,6 +19,7 @@ import { matchPath } from 'react-router';
  * @param {string} url Url to be parsed.
  * @return {string} Base url of content object.
  */
+
 export const getBaseUrl = memoize((url) => {
   const { settings } = config;
   const prefix = settings.prefixPath;
@@ -104,10 +105,14 @@ export function getView(url) {
  * @returns {string} Flattened URL to the app server
  */
 export function flattenToAppURL(url) {
+  let adjustedUrl = url;
   const { settings } = config;
+  const prefix = settings.prefixPath;
+  if (prefix && adjustedUrl?.indexOf(prefix) === -1)
+    adjustedUrl = `${prefix}${adjustedUrl}`;
   return (
-    url &&
-    url
+    adjustedUrl &&
+    adjustedUrl
       .replace(settings.internalApiPath, '')
       .replace(settings.apiPath, '')
       .replace(settings.publicURL, '')
