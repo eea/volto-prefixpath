@@ -108,15 +108,16 @@ export function flattenToAppURL(url) {
   let adjustedUrl = url;
   const { settings } = config;
   const prefix = settings.prefixPath;
-  if (prefix && adjustedUrl?.indexOf(prefix) === -1)
-    adjustedUrl = `${prefix}${adjustedUrl}`;
-  return (
+  adjustedUrl =
     adjustedUrl &&
     adjustedUrl
       .replace(settings.internalApiPath, '')
       .replace(settings.apiPath, '')
-      .replace(settings.publicURL, '')
-  );
+      .replace(settings.publicURL, '');
+
+  if (prefix && adjustedUrl?.length && !adjustedUrl?.startsWith(prefix))
+    adjustedUrl = `${prefix}${adjustedUrl}`;
+  return adjustedUrl;
 }
 /**
  * Given a URL it remove the querystring from the URL.
