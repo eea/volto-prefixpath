@@ -269,7 +269,11 @@ server.get('/*', (req, res) => {
         <ChunkExtractorManager extractor={extractor}>
           <CookiesProvider cookies={req.universalCookies}>
             <Provider store={store} onError={reactIntlErrorHandler}>
-              <StaticRouter context={context} location={req.url} basename={'/'}>
+              <StaticRouter
+                context={context}
+                location={req.url}
+                basename={config.settings.prefixPath ?? '/'}
+              >
                 <ReduxAsyncConnect routes={routes} helpers={api} />
               </StaticRouter>
             </Provider>
