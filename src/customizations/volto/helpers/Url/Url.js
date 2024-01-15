@@ -22,7 +22,7 @@ import { matchPath } from 'react-router';
 
 export const getBaseUrl = memoize((url) => {
   const { settings } = config;
-  const prefix = settings.prefixPath;
+
   if (url === undefined) return;
 
   // We allow settings.nonContentRoutes to have strings (that are supposed to match
