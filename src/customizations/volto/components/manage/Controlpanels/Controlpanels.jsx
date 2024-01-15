@@ -10,13 +10,18 @@ import { useSelector } from 'react-redux';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Portal } from 'react-portal';
 import { withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { Container, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
 import { getSystemInformation, listControlpanels } from '@plone/volto/actions';
 import { Helmet, asyncConnect } from '@plone/volto/helpers';
-import { Error, Icon, Toolbar, VersionOverview } from '@plone/volto/components';
+import {
+  Error,
+  Icon,
+  Toolbar,
+  VersionOverview,
+  UniversalLink,
+} from '@plone/volto/components';
 
 import config from '@plone/volto/registry';
 
@@ -213,12 +218,12 @@ function Controlpanels(props) {
                 id="The site configuration is outdated and needs to be upgraded."
                 defaultMessage="The site configuration is outdated and needs to be upgraded."
               />{' '}
-              <Link to={`/controlpanel/plone-upgrade`}>
+              <UniversalLink href={`/controlpanel/plone-upgrade`}>
                 <FormattedMessage
                   id="Please continue with the upgrade."
                   defaultMessage="Please continue with the upgrade."
                 />
-              </Link>
+              </UniversalLink>
             </Message>
           )}
           {map(groups, (group) => [
@@ -235,7 +240,9 @@ function Controlpanels(props) {
                     ),
                     (controlpanel) => (
                       <Grid.Column key={controlpanel.id}>
-                        <Link to={`/controlpanel/${controlpanel.id}`}>
+                        <UniversalLink
+                          href={`/controlpanel/${controlpanel.id}`}
+                        >
                           <Header as="h3" icon textAlign="center">
                             <Icon
                               name={icons?.[controlpanel.id] || icons.default}
@@ -245,7 +252,7 @@ function Controlpanels(props) {
                               {controlpanel.title}
                             </Header.Content>
                           </Header>
-                        </Link>
+                        </UniversalLink>
                       </Grid.Column>
                     ),
                   )}
@@ -274,14 +281,14 @@ function Controlpanels(props) {
             pathname={pathname}
             hideDefaultViewButtons
             inner={
-              <Link to="/" className="item">
+              <UniversalLink href="/" className="item">
                 <Icon
                   name={backSVG}
                   className="contents circled"
                   size="30px"
                   title={intl.formatMessage(messages.back)}
                 />
-              </Link>
+              </UniversalLink>
             }
           />
         </Portal>
