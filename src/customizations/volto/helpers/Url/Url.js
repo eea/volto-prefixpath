@@ -115,9 +115,10 @@ export function flattenToAppURL(url) {
       .replace(settings.internalApiPath, '')
       .replace(settings.apiPath, '')
       .replace(settings.publicURL, '');
-
-  if (prefix && adjustedUrl?.length && !adjustedUrl?.startsWith(prefix))
-    adjustedUrl = `${prefix}${adjustedUrl}`;
+  if (isInternalURL(adjustedUrl)) {
+    if (prefix && adjustedUrl?.length && !adjustedUrl?.startsWith(prefix))
+      adjustedUrl = `${prefix}${adjustedUrl}`;
+  }
   return adjustedUrl;
 }
 /**
