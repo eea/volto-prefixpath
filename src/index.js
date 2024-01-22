@@ -1,4 +1,5 @@
 import { getSystemInformation, listControlpanels } from '@plone/volto/actions';
+import installPrefixPath from './middleware/prefixPath';
 
 const applyConfig = (config) => {
   const prefixPath = process.env.RAZZLE_PREFIX_PATH;
@@ -59,6 +60,11 @@ const applyConfig = (config) => {
   config.settings.apiExpanders = [...config.settings.apiExpanders].filter(
     (item) => !item.GET_CONTENT.includes('breadcrumbs'),
   );
+
+  config.settings.storeExtenders = [
+    ...config.settings.storeExtenders,
+    installPrefixPath,
+  ];
 
   return config;
 };
