@@ -44,7 +44,7 @@ export function addExpandersToPath(path, type, isAnonymous) {
   const { settings } = config;
   let pathname = path;
   const { apiExpanders = [], prefixPath } = settings;
-  if (prefixPath && path?.startsWith(prefixPath))
+  if (prefixPath && path.match(new RegExp(`^${prefixPath}(/|$)`)))
     pathname = path?.slice(prefixPath.length);
 
   const {
