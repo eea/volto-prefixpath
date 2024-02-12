@@ -115,7 +115,16 @@ export function flattenToAppURL(url) {
       .replace(settings.internalApiPath, '')
       .replace(settings.apiPath, '')
       .replace(settings.publicURL, '');
-  if (!adjustedUrl?.startsWith('#')) {
+  const internalURL =
+    adjustedUrl &&
+    (adjustedUrl.indexOf(settings.publicURL) !== -1 ||
+      (settings.internalApiPath &&
+        adjustedUrl.indexOf(settings.internalApiPath) !== -1) ||
+      adjustedUrl.indexOf(settings.apiPath) !== -1 ||
+      adjustedUrl.charAt(0) === '/' ||
+      adjustedUrl.charAt(0) === '.');
+  //using isInternalUrl method causes infinite loop with special externalRoutes defined in wise-marine #264955
+  if (internalURL && !adjustedUrl.startsWith('#')) {
     if (prefix && adjustedUrl?.length && !adjustedUrl?.startsWith(prefix))
       adjustedUrl = `${prefix}${adjustedUrl}`;
   }
