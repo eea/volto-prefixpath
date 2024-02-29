@@ -109,6 +109,10 @@ export function flattenToAppURL(url) {
   let adjustedUrl = url;
   const { settings } = config;
   const prefix = settings.prefixPath;
+
+  //we need this to exclude links like /marine in freshwater because both are under same domain
+  // this should be removed after volto 17
+  const blackList = settings.blackListUrls;
   adjustedUrl =
     adjustedUrl &&
     adjustedUrl
@@ -124,7 +128,11 @@ export function flattenToAppURL(url) {
       adjustedUrl.charAt(0) === '/' ||
       adjustedUrl.charAt(0) === '.');
   //using isInternalUrl method causes infinite loop with special externalRoutes defined in wise-marine #264955
-  if (internalURL && !adjustedUrl.startsWith('#')) {
+  if (
+    internalURL &&
+    !adjustedUrl.startsWith('#') &&
+    !(blackList || []).some((url) => url === adjustedUrl)
+  ) {
     if (prefix && adjustedUrl?.length && !adjustedUrl?.startsWith(prefix))
       adjustedUrl = `${prefix}${adjustedUrl}`;
   }
