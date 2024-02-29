@@ -131,7 +131,7 @@ export function flattenToAppURL(url) {
   if (
     internalURL &&
     !adjustedUrl.startsWith('#') &&
-    !blackList.some((url) => url === adjustedUrl)
+    !(blackList || []).some((url) => url === adjustedUrl)
   ) {
     if (prefix && adjustedUrl?.length && !adjustedUrl?.startsWith(prefix))
       adjustedUrl = `${prefix}${adjustedUrl}`;
