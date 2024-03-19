@@ -45,7 +45,7 @@ module.exports = {
   },
   ...(process.env.JEST_USE_SETUP === 'ON' && {
     setupFilesAfterEnv: [
-      '<rootDir>/node_modules/@eeacms/volto-prefixPath/jest.setup.js',
+      '<rootDir>/node_modules/@eeacms/volto-prefixpath/jest.setup.js',
     ],
   }),
 }
