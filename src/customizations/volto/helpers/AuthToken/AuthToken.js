@@ -60,7 +60,9 @@ export function persistAuthToken(store, req) {
     if (previousValue !== currentValue || initial) {
       if (!currentValue) {
         if (previousValue) {
-          cookies.remove('auth_token', { path: '/' });
+          cookies.remove('auth_token', {
+            path: config.settings.prefixPath ?? '/',
+          });
         }
       } else {
         if (previousValue !== currentValue) {
