@@ -17,7 +17,7 @@ import configureStore from '@plone/volto/store';
 import { Api, persistAuthToken, ScrollToTop } from '@plone/volto/helpers';
 
 export const history = createBrowserHistory({
-  basename: '/',
+  basename: config.settings.prefixPath ?? '/',
 });
 
 function reactIntlErrorHandler(error) {

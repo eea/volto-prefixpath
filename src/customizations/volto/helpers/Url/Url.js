@@ -40,8 +40,8 @@ export const getBaseUrl = memoize((url) => {
     url,
   );
 
-  //TODO: we can strip prefix from here /sharing pages
-  // //strip prefix path from url
+  // TODO: we can strip prefix from here /sharing pages
+  // strip prefix path from url
   // if (prefix && adjustedUrl.match(new RegExp(`^${prefix}(/|$)`))) {
   //   adjustedUrl = adjustedUrl.slice(prefix.length);
   // }
@@ -106,37 +106,14 @@ export function getView(url) {
  * @returns {string} Flattened URL to the app server
  */
 export function flattenToAppURL(url) {
-  let adjustedUrl = url;
   const { settings } = config;
-  const prefix = settings.prefixPath;
-
-  //we need this to exclude links like /marine in freshwater because both are under same domain
-  // this should be removed after volto 17
-  const blackList = settings.blackListUrls;
-  adjustedUrl =
-    adjustedUrl &&
-    adjustedUrl
+  return (
+    url &&
+    url
       .replace(settings.internalApiPath, '')
       .replace(settings.apiPath, '')
-      .replace(settings.publicURL, '');
-  const internalURL =
-    adjustedUrl &&
-    (adjustedUrl.indexOf(settings.publicURL) !== -1 ||
-      (settings.internalApiPath &&
-        adjustedUrl.indexOf(settings.internalApiPath) !== -1) ||
-      adjustedUrl.indexOf(settings.apiPath) !== -1 ||
-      adjustedUrl.charAt(0) === '/' ||
-      adjustedUrl.charAt(0) === '.');
-  //using isInternalUrl method causes infinite loop with special externalRoutes defined in wise-marine #264955
-  if (
-    internalURL &&
-    !adjustedUrl.startsWith('#') &&
-    !(blackList || []).some((url) => url === adjustedUrl)
-  ) {
-    if (prefix && adjustedUrl?.length && !adjustedUrl?.startsWith(prefix))
-      adjustedUrl = `${prefix}${adjustedUrl}`;
-  }
-  return adjustedUrl;
+      .replace(settings.publicURL, '')
+  );
 }
 /**
  * Given a URL it remove the querystring from the URL.

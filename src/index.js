@@ -57,14 +57,14 @@ const applyConfig = (config) => {
   // }
 
   // do not expand breadcrumbs
-  config.settings.apiExpanders = [...config.settings.apiExpanders].filter(
-    (item) => !item.GET_CONTENT.includes('breadcrumbs'),
-  );
+  // config.settings.apiExpanders = [...config.settings.apiExpanders].filter(
+  //   (item) => !item.GET_CONTENT.includes('breadcrumbs'),
+  // );
 
-  config.settings.storeExtenders = [
-    ...config.settings.storeExtenders,
-    installPrefixPath,
-  ];
+  // config.settings.storeExtenders = [
+  //   ...config.settings.storeExtenders,
+  //   installPrefixPath,
+  // ];
 
   return config;
 };
