@@ -56,7 +56,7 @@ const applyConfig = (config) => {
   //   ];
   // }
 
-  // do not expand breadcrumbs
+  //do not expand breadcrumbs
   // config.settings.apiExpanders = [...config.settings.apiExpanders].filter(
   //   (item) => !item.GET_CONTENT.includes('breadcrumbs'),
   // );
