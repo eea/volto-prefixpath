@@ -111,7 +111,7 @@ export function flattenToAppURL(url) {
   const prefix = settings.prefixPath;
 
   //we need this to exclude links like /marine in freshwater because both are under same domain
-  // this should be removed after volto 17
+
   const blackList = settings.blackListUrls;
   adjustedUrl =
     adjustedUrl &&
