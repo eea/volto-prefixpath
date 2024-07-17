@@ -14,12 +14,7 @@ import loadable from '@loadable/component';
 import cx from 'classnames';
 import { isEqual } from 'lodash';
 
-import {
-  Icon,
-  ImageSidebar,
-  SidebarPortal,
-  Image,
-} from '@plone/volto/components';
+import { Icon, ImageSidebar, SidebarPortal } from '@plone/volto/components';
 import { withBlockExtensions } from '@plone/volto/helpers';
 import { createContent } from '@plone/volto/actions';
 import {
@@ -28,6 +23,8 @@ import {
   isInternalURL,
   validateFileUploadSize,
 } from '@plone/volto/helpers';
+
+import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 
 import imageBlockSVG from '@plone/volto/components/manage/Blocks/Image/block-image.svg';
 import clearSVG from '@plone/volto/icons/clear.svg';

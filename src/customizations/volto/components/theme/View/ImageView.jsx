@@ -12,7 +12,7 @@ import { flattenToAppURL } from '@plone/volto/helpers';
 import { addPrefixPath } from '@plone/volto/helpers/Url/Url';
 import config from '@plone/volto/registry';
 
-import { Image } from '@plone/volto/components';
+import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 
 /**
  * Image view component class.

@@ -20,7 +20,8 @@ import {
   validateFileUploadSize,
 } from '@plone/volto/helpers';
 import { createContent } from '@plone/volto/actions';
-import { Icon, SidebarPortal, LinkMore, Image } from '@plone/volto/components';
+import { Icon, SidebarPortal, LinkMore } from '@plone/volto/components';
+import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 
 import clearSVG from '@plone/volto/icons/clear.svg';
 

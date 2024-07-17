@@ -5,10 +5,12 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { UniversalLink, Image } from '@plone/volto/components';
+import { UniversalLink } from '@plone/volto/components';
 import cx from 'classnames';
 import { withBlockExtensions } from '@plone/volto/helpers';
 import { flattenToAppURL, isInternalURL } from '@plone/volto/helpers';
+
+import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 
 /**
  * View image block class.

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { flattenToAppURL } from '@plone/volto/helpers';
-import { LinkMore, Image } from '@plone/volto/components';
+import { LinkMore } from '@plone/volto/components';
+import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 
 const View = ({ data }) => (
   <div className="block hero">
