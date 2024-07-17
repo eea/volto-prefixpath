@@ -61,10 +61,10 @@ const applyConfig = (config) => {
   //   (item) => !item.GET_CONTENT.includes('breadcrumbs'),
   // );
 
-  // config.settings.storeExtenders = [
-  //   ...config.settings.storeExtenders,
-  //   installPrefixPath,
-  // ];
+  config.settings.storeExtenders = [
+    ...config.settings.storeExtenders,
+    installPrefixPath,
+  ];
 
   return config;
 };
