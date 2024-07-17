@@ -37,7 +37,7 @@ const defaultConfig = {
           ['@plone/volto-slate', '@plone/volto/packages/volto-slate/src'],
           ...addonAliases,
           ['@package', `${__dirname}/src`],
-          ['@root', `${__dirname}/src`],
+          ['@root', `${projectRootPath}/src`],
           ['~', `${__dirname}/src`],
         ],
         extensions: ['.js', '.jsx', '.json'],
