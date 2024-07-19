@@ -23,9 +23,6 @@ SHELL:=bash
 .DELETE_ON_ERROR:
 MAKEFLAGS+=--warn-undefined-variables
 MAKEFLAGS+=--no-builtin-rules
-DOCKER_IMAGE_ACCEPTANCE=plone/server-acceptance:6.0.8
-NODEBIN = ./node_modules/.bin
-
 
 # Colors
 # OK=Green, warn=yellow, error=red
@@ -49,7 +46,7 @@ endif
 DIR=$(shell basename $$(pwd))
 NODE_MODULES?="../../../node_modules"
 PLONE_VERSION?=6
-VOLTO_VERSION?=16
+VOLTO_VERSION?=17
 ADDON_PATH="${DIR}"
 ADDON_NAME="@eeacms/${ADDON_PATH}"
 DOCKER_COMPOSE=PLONE_VERSION=${PLONE_VERSION} VOLTO_VERSION=${VOLTO_VERSION} ADDON_NAME=${ADDON_NAME} ADDON_PATH=${ADDON_PATH} docker compose
@@ -89,7 +86,7 @@ cypress-open:		## Open cypress integration tests
 
 .PHONY: cypress-run
 cypress-run:	## Run cypress integration tests
-	CYPRESS_API_PATH="${RAZZLE_DEV_PROXY_API_PATH}" NODE_ENV=development  $(NODE_MODULES)/cypress/bin/cypress run --browser chromium
+	CYPRESS_API_PATH="${RAZZLE_DEV_PROXY_API_PATH}" NODE_ENV=development  $(NODE_MODULES)/cypress/bin/cypress run
 
 .PHONY: test
 test:			## Run jest tests
@@ -101,7 +98,7 @@ test-update:	## Update jest tests snapshots
 
 .PHONY: stylelint
 stylelint:		## Stylelint
-	$(NODE_MODULES)/stylelint/bin/stylelint.js --allow-empty-input 'src/**/*.{css,less}'
+	$(NODE_MODULES)/.bin/stylelint --allow-empty-input 'src/**/*.{css,less}'
 
 .PHONY: stylelint-overrides
 stylelint-overrides:
@@ -109,7 +106,7 @@ stylelint-overrides:
 
 .PHONY: stylelint-fix
 stylelint-fix:	## Fix stylelint
-	$(NODE_MODULES)/stylelint/bin/stylelint.js --allow-empty-input 'src/**/*.{css,less}' --fix
+	$(NODE_MODULES)/.bin/stylelint --allow-empty-input 'src/**/*.{css,less}' --fix
 	$(NODE_MODULES)/.bin/stylelint --custom-syntax less --allow-empty-input 'theme/**/*.overrides' 'src/**/*.overrides' --fix
 
 .PHONY: prettier
@@ -122,11 +119,11 @@ prettier-fix:	## Fix prettier
 
 .PHONY: lint
 lint:			## ES Lint
-	$(NODE_MODULES)/eslint/bin/eslint.js --max-warnings=0 'src/**/*.{js,jsx}'
+	$(NODE_MODULES)/.bin/eslint --max-warnings=0 'src/**/*.{js,jsx}'
 
 .PHONY: lint-fix
 lint-fix:		## Fix ES Lint
-	$(NODE_MODULES)/eslint/bin/eslint.js --fix 'src/**/*.{js,jsx}'
+	$(NODE_MODULES)/.bin/eslint --fix 'src/**/*.{js,jsx}'
 
 .PHONY: i18n
 i18n:			## i18n
@@ -154,38 +151,16 @@ test-ci:
 
 .PHONY: start-ci
 start-ci:
+	cp .coverage.babel.config.js /app/babel.config.js
 	cd ../..
-	yarn start &
+	yarn start
+
+.PHONY: check-ci
+check-ci:
+	$(NODE_MODULES)/.bin/wait-on -t 240000  http://localhost:3000
 
 .PHONY: cypress-ci
 cypress-ci:
-	cp .coverage.babel.config.js /app/babel.config.js
-	make start-ci
 	$(NODE_MODULES)/.bin/wait-on -t 240000  http://localhost:3000
-	NODE_ENV=development make cypress-run
-
-.PHONY: test-acceptance-headless
-test-acceptance-headless: ## Start Core Cypress Acceptance Tests in headless mode
-	NODE_ENV=production CYPRESS_API=plone $(NODEBIN)/cypress run --config specPattern='cypress/tests/core/**/*.{js,jsx,ts,tsx}'
-
-.PHONY: start-test-acceptance-server test-acceptance-server
-start-test-acceptance-server test-acceptance-server: ## Start Test Acceptance Server Main Fixture (docker container)
-	docker run -i --rm -p 55001:55001 $(DOCKER_IMAGE_ACCEPTANCE)
-######### Prefixed Core Acceptance tests
-
-.PHONY: start-test-acceptance-frontend-prefixed
-start-test-acceptance-frontend-prefixed: ## Start the prefixed Core Acceptance Frontend Fixture
-	RAZZLE_PREFIX_PATH=/foo RAZZLE_API_PATH=http://localhost/foo yarn build && yarn start:prod
-
-.PHONY: full-test-acceptance-prefixed
-full-test-acceptance-prefixed: ## Runs prefixed Core Full Acceptance Testing in headless mode
-	$(NODEBIN)/start-test "make start-test-acceptance-server" http-get://localhost:55001/plone "make start-test-acceptance-frontend-prefixed" http://localhost:3000 "make test-acceptance-headless"
-
-.PHONY: test-acceptance-prefixed
-test-acceptance-prefixed: ## Start Prefixed Cypress Acceptance Tests
-	NODE_ENV=production CYPRESS_API=plone $(NODEBIN)/cypress open --config baseUrl='http://localhost/foo'
-
-.PHONY: start-test-acceptance-webserver-prefixed
-start-test-acceptance-webserver-prefixed: ## Start the prefixed webserver
-	cd docker && docker-compose -f prefixed.yml up
-
+	CYPRESS_API_PATH="${RAZZLE_DEV_PROXY_API_PATH}" NODE_ENV=development  $(NODE_MODULES)/cypress/bin/cypress run --browser chromium
+	

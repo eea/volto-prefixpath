@@ -1,6 +1,6 @@
 {
   "name": "@eeacms/volto-prefixpath",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "@eeacms/volto-prefixpath: Volto add-on",
   "main": "src/index.js",
   "author": "European Environment Agency: IDM2 A-Team",
@@ -26,6 +26,7 @@
     "@cypress/code-coverage": "^3.10.0",
     "cypress": "13.1.0",
     "@plone/scripts": "*",
+    "dotenv": "^16.3.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "cypress-fail-fast": "^5.0.1",
     "husky": "^8.0.3",
