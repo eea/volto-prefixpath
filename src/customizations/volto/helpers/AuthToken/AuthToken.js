@@ -9,7 +9,6 @@ import jwtDecode from 'jwt-decode';
 import { loginRenew } from '@plone/volto/actions';
 import { getCookieOptions } from '@plone/volto/helpers';
 import { push } from 'connected-react-router';
-import config from '@plone/volto/registry';
 
 /**
  * Get auth token method (does not work in SSR)
@@ -60,9 +59,7 @@ export function persistAuthToken(store, req) {
     if (previousValue !== currentValue || initial) {
       if (!currentValue) {
         if (previousValue) {
-          cookies.remove('auth_token', {
-            path: config.settings.prefixPath ?? '/',
-          });
+          cookies.remove('auth_token');
         }
       } else {
         if (previousValue !== currentValue) {
@@ -71,7 +68,6 @@ export function persistAuthToken(store, req) {
             currentValue,
             getCookieOptions({
               expires: new Date(jwtDecode(currentValue).exp * 1000),
-              path: config.settings.prefixPath ?? '/',
             }),
           );
         }
