@@ -9,7 +9,6 @@ import jwtDecode from 'jwt-decode';
 import { loginRenew } from '@plone/volto/actions';
 import { getCookieOptions } from '@plone/volto/helpers';
 import { push } from 'connected-react-router';
-import config from '@plone/volto/registry';
 
 /**
  * Get auth token method (does not work in SSR)
