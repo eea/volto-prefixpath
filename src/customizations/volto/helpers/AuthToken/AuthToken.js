@@ -62,7 +62,7 @@ export function persistAuthToken(store, req) {
       if (!currentValue) {
         if (previousValue) {
           cookies.remove('auth_token', {
-            path: config.settings.prefixPath
+            path: config.settings.prefixPath,
           });
         }
       } else {
@@ -72,7 +72,7 @@ export function persistAuthToken(store, req) {
             currentValue,
             getCookieOptions({
               expires: new Date(jwtDecode(currentValue).exp * 1000),
-              path: config.settings.prefixPath
+              path: config.settings.prefixPath,
             }),
           );
         }
