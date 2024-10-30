@@ -29,12 +29,10 @@ export const getAPIResourceWithAuth = (req) =>
     }
 
     let path = req.path;
-
     if (prefix && path.match(new RegExp(`^${prefix}(/|$)`))) {
       //if path starts with prefixPath
-      path = path.slice(prefix.length);
+      path = path.replace(/^(\/marine)+/, '');
     }
-
     const request = superagent
       .get(`${apiPath}${__DEVELOPMENT__ ? '' : APISUFIX}${path}`)
       .maxResponseSize(settings.maxResponseSize)
