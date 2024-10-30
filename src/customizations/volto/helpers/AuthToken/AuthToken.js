@@ -28,7 +28,6 @@ export function getAuthToken() {
  * @returns {undefined}
  */
 export function persistAuthToken(store, req) {
-  console.log(config.settings.prefixPath);
   const cookies = new Cookies();
   let currentValue;
   if (req) {
