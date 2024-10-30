@@ -31,7 +31,7 @@ export const getAPIResourceWithAuth = (req) =>
     let path = req.path;
     if (prefix && path.match(new RegExp(`^${prefix}(/|$)`))) {
       //if path starts with prefixPath
-      path = path.replace(/^(\/marine)+/, '');
+      path = path.replace(new RegExp(`^(${prefix})+`), '');
     }
     const request = superagent
       .get(`${apiPath}${__DEVELOPMENT__ ? '' : APISUFIX}${path}`)
