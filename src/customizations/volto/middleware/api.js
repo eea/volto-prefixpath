@@ -44,7 +44,12 @@ export function addExpandersToPath(path, type, isAnonymous) {
   const { settings } = config;
   let pathname = path;
   const { apiExpanders = [], prefixPath } = settings;
-  if (prefixPath && path.match(new RegExp(`^${prefixPath}(/|$)`)))
+  if (
+    prefixPath &&
+    path.match(new RegExp(`^${prefixPath}(/|$)`)) &&
+    !path.includes('@login-authomatic') &&
+    !path.includes('login-authomatic')
+  )
     pathname = path?.slice(prefixPath.length);
 
   const {
