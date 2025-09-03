@@ -17,6 +17,7 @@ import { resetServerContext } from 'react-beautiful-dnd';
 import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
 import debug from 'debug';
+import crypto from 'crypto';
 
 import routes from '@root/routes';
 import config from '@plone/volto/registry';
@@ -45,6 +46,7 @@ import {
 } from '@plone/volto/helpers/AsyncConnect';
 
 let locales = {};
+const isCSP = process.env.CSP_HEADER || config.settings.serverConfig.csp;
 
 if (config.settings) {
   config.settings.supportedLanguages.forEach((lang) => {
@@ -116,7 +118,28 @@ server.use(function (err, req, res, next) {
   }
 });
 
+function buildCSPHeader(opts, nonce) {
+  if (typeof opts === 'string') {
+    //CSP_HEADER
+    return opts.replaceAll('{nonce}', `'nonce-${nonce}'`);
+  }
+  return Object.keys(opts)
+    .sort()
+    .reduce((acc, key) => {
+      return [
+        ...acc,
+        `${key} ${opts[key].replaceAll('{nonce}', `'nonce-${nonce}'`)}`,
+      ];
+    }, [])
+    .join('; ');
+}
+
 function setupServer(req, res, next) {
+  if (isCSP) {
+    const nonce = crypto.randomBytes(16).toString('base64');
+    res.locals.nonce = nonce;
+  }
+
   const api = new Api(req);
 
   const lang = toReactIntlLang(
@@ -190,7 +213,11 @@ function setupServer(req, res, next) {
 }
 
 server.get('/*', (req, res) => {
-  const { errorHandler } = res.locals;
+  const { errorHandler, nonce } = res.locals;
+
+  if (isCSP) {
+    res.setHeader('Content-Security-Policy', buildCSPHeader(isCSP, nonce));
+  }
 
   const api = new Api(req);
 
@@ -301,6 +328,7 @@ server.get('/*', (req, res) => {
               ${renderToString(
                 <Html
                   extractor={extractor}
+                  nonce={nonce}
                   markup={markup}
                   store={store}
                   extractScripts={
@@ -322,6 +350,7 @@ server.get('/*', (req, res) => {
               ${renderToString(
                 <Html
                   extractor={extractor}
+                  nonce={nonce}
                   markup={markup}
                   store={store}
                   criticalCss={readCriticalCss(req)}
