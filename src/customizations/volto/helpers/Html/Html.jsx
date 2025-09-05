@@ -79,6 +79,7 @@ class Html extends Component {
     store: PropTypes.shape({
       getState: PropTypes.func,
     }).isRequired,
+    nonce: PropTypes.string,
   };
 
   /**
@@ -87,7 +88,7 @@ class Html extends Component {
    * @returns {string} Markup for the component.
    */
   render() {
-    const { extractor, markup, store, criticalCss, apiPath, publicURL } =
+    const { extractor, markup, store, criticalCss, apiPath, publicURL, nonce } =
       this.props;
     const head = Helmet.rewind();
     const bodyClass = join(BodyClass.rewind(), ' ');
@@ -103,21 +104,25 @@ class Html extends Component {
           {head.link.toComponent()}
           {head.script.toComponent()}
 
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `window.env = ${serialize({
-                ...runtimeConfig,
-                // Seamless mode requirement, the client need to know where the API is located
-                // if not set in the API_PATH
-                ...(apiPath && {
-                  apiPath,
-                }),
-                ...(publicURL && {
-                  publicURL,
-                }),
-              })};`,
-            }}
-          />
+          {React.createElement('script', {
+            nonce: nonce,
+            dangerouslySetInnerHTML: {
+              __html: `window.env = ${serialize(
+                {
+                  ...runtimeConfig,
+                  // Seamless mode requirement, the client need to know where the API is located
+                  // if not set in the API_PATH
+                  ...(apiPath && {
+                    apiPath,
+                  }),
+                  ...(publicURL && {
+                    publicURL,
+                  }),
+                },
+                { space: 2 },
+              )};`,
+            },
+          })}
 
           <link
             rel="icon"
@@ -189,18 +194,21 @@ class Html extends Component {
           <div role="navigation" aria-label="Toolbar" id="toolbar" />
           <div id="main" dangerouslySetInnerHTML={{ __html: markup }} />
           <div role="complementary" aria-label="Sidebar" id="sidebar" />
-          <script
-            dangerouslySetInnerHTML={{
+          {React.createElement('script', {
+            nonce: nonce,
+            dangerouslySetInnerHTML: {
               __html: `window.__data=${serialize(
                 loadReducers(store.getState()),
+                { space: 2 },
               )};`,
-            }}
-            charSet="UTF-8"
-          />
+            },
+            charSet: 'UTF-8',
+          })}
           {/* Add the crossorigin while in development */}
           {this.props.extractScripts !== false
             ? extractor.getScriptElements().map((elem) =>
                 React.cloneElement(elem, {
+                  nonce: nonce,
                   crossOrigin:
                     process.env.NODE_ENV === 'production' ? undefined : 'true',
                 }),
