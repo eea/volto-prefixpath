@@ -5,10 +5,10 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { UniversalLink } from '@plone/volto/components';
+import UniversalLink from '@plone/volto/components/manage/UniversalLink/UniversalLink';
 import cx from 'classnames';
-import { withBlockExtensions } from '@plone/volto/helpers';
-import { flattenToAppURL, isInternalURL } from '@plone/volto/helpers';
+import { withBlockExtensions } from '@plone/volto/helpers/Extensions';
+import { flattenToAppURL, isInternalURL } from '@plone/volto/helpers/Url/Url';
 
 import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 

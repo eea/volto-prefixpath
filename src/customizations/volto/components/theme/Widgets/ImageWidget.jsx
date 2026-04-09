@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { flattenToAppURL } from '@plone/volto/helpers';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
 import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 
 const niceBytes = (bytes) => {

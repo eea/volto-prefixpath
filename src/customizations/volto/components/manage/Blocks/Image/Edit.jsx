@@ -14,15 +14,17 @@ import loadable from '@loadable/component';
 import cx from 'classnames';
 import { isEqual } from 'lodash';
 
-import { Icon, ImageSidebar, SidebarPortal } from '@plone/volto/components';
-import { withBlockExtensions } from '@plone/volto/helpers';
-import { createContent } from '@plone/volto/actions';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import ImageSidebar from '@plone/volto/components/manage/Blocks/Image/ImageSidebar';
+import SidebarPortal from '@plone/volto/components/manage/Sidebar/SidebarPortal';
+import { withBlockExtensions } from '@plone/volto/helpers/Extensions';
+import { createContent } from '@plone/volto/actions/content/content';
 import {
   flattenToAppURL,
   getBaseUrl,
   isInternalURL,
   validateFileUploadSize,
-} from '@plone/volto/helpers';
+} from '@plone/volto/helpers/Url/Url';
 
 import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 

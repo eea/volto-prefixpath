@@ -13,15 +13,17 @@ import { withRouter } from 'react-router';
 import { compose } from 'redux';
 import { Container, Grid, Header, Message, Segment } from 'semantic-ui-react';
 
-import { getSystemInformation, listControlpanels } from '@plone/volto/actions';
-import { Helmet, asyncConnect } from '@plone/volto/helpers';
 import {
-  Error,
-  Icon,
-  Toolbar,
-  VersionOverview,
-  UniversalLink,
-} from '@plone/volto/components';
+  getSystemInformation,
+  listControlpanels,
+} from '@plone/volto/actions/controlpanels/controlpanels';
+import Helmet from '@plone/volto/helpers/Helmet/Helmet';
+import { asyncConnect } from '@plone/volto/helpers/AsyncConnect';
+import Error from '@plone/volto/components/theme/Error/Error';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import Toolbar from '@plone/volto/components/manage/Toolbar/Toolbar';
+import VersionOverview from '@plone/volto/components/manage/Controlpanels/VersionOverview';
+import UniversalLink from '@plone/volto/components/manage/UniversalLink/UniversalLink';
 
 import config from '@plone/volto/registry';
 

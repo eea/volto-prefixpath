@@ -18,9 +18,11 @@ import {
   flattenToAppURL,
   getBaseUrl,
   validateFileUploadSize,
-} from '@plone/volto/helpers';
-import { createContent } from '@plone/volto/actions';
-import { Icon, SidebarPortal, LinkMore } from '@plone/volto/components';
+} from '@plone/volto/helpers/Url/Url';
+import { createContent } from '@plone/volto/actions/content/content';
+import Icon from '@plone/volto/components/theme/Icon/Icon';
+import SidebarPortal from '@plone/volto/components/manage/Sidebar/SidebarPortal';
+import LinkMore from '@plone/volto/components/manage/LinkMore/LinkMore';
 import Image from '@eeacms/volto-prefixpath/components/Image/Image';
 
 import clearSVG from '@plone/volto/icons/clear.svg';

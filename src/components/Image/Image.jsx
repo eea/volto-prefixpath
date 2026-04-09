@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import { flattenToAppURL } from '@plone/volto/helpers';
-import { addPrefixPath, flattenScales } from '@plone/volto/helpers/Url/Url';
+import {
+  flattenToAppURL,
+  addPrefixPath,
+  flattenScales,
+} from '@plone/volto/helpers/Url/Url';
 
 /**
  * Image component
