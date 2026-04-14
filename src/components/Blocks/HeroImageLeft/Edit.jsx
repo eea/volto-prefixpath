@@ -9,25 +9,24 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { readAsDataURL } from 'promise-file-reader';
 import { Button, Dimmer, Loader, Message } from 'semantic-ui-react';
-import { isEqual } from 'lodash';
+import isEqual from 'lodash/isEqual';
 import { defineMessages, injectIntl } from 'react-intl';
 import cx from 'classnames';
 
 import { injectLazyLibs } from '@plone/volto/helpers/Loadable/Loadable';
-import {
-  flattenToAppURL,
-  getBaseUrl,
-  validateFileUploadSize,
-} from '@plone/volto/helpers/Url/Url';
+
+import { validateFileUploadSize } from '@plone/volto/helpers/FormValidation/FormValidation';
+import { flattenToAppURL, getBaseUrl } from '@plone/volto/helpers/Url/Url';
+
 import { createContent } from '@plone/volto/actions/content/content';
+
 import Icon from '@plone/volto/components/theme/Icon/Icon';
 import SidebarPortal from '@plone/volto/components/manage/Sidebar/SidebarPortal';
 import LinkMore from '@plone/volto/components/manage/LinkMore/LinkMore';
-import Image from '@eeacms/volto-prefixpath/components/Image/Image';
-
+import Image from '@plone/volto/components/theme/Image/Image';
 import clearSVG from '@plone/volto/icons/clear.svg';
 
-import Data from '@plone/volto/components/manage/Blocks/HeroImageLeft/Data';
+import Data from './Data';
 
 const messages = defineMessages({
   title: {
@@ -145,6 +144,7 @@ class EditComponent extends Component {
       } else {
         titleEditorState = EditorState.createEmpty();
       }
+
       if (props.data && props.data.description) {
         descriptionEditorState = EditorState.createWithContent(
           stateFromHTML(props.data.description),
@@ -312,6 +312,7 @@ class EditComponent extends Component {
     if (__SERVER__) {
       return <div />;
     }
+
     const { Editor } = this.props.draftJs;
     const placeholder =
       this.props.data.placeholder ||

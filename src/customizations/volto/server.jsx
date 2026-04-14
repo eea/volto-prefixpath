@@ -8,7 +8,6 @@ import express from 'express';
 import { renderToString } from 'react-dom/server';
 import { createMemoryHistory } from 'history';
 import { parse as parseUrl } from 'url';
-import { keys } from 'lodash';
 import locale from 'locale';
 import { detect } from 'detect-browser';
 import path from 'path';
@@ -18,28 +17,24 @@ import { CookiesProvider } from 'react-cookie';
 import cookiesMiddleware from 'universal-cookie-express';
 import debug from 'debug';
 import crypto from 'crypto';
-
+// eslint-disable-next-line
 import routes from '@root/routes';
 import config from '@plone/volto/registry';
 
+import Html from '@plone/volto/helpers/Html/Html';
+import Api from '@plone/volto/helpers/Api/Api';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
+import { persistAuthToken } from '@plone/volto/helpers/AuthToken/AuthToken';
 import {
-  flattenToAppURL,
   toBackendLang,
   toGettextLang,
   toReactIntlLang,
 } from '@plone/volto/helpers/Utils/Utils';
-import Html from '@plone/volto/helpers/Html/Html';
-import Api from '@plone/volto/helpers/Api/Api';
-import { persistAuthToken } from '@plone/volto/helpers/AuthToken/AuthToken';
 import { changeLanguage } from '@plone/volto/actions/language/language';
 
 import userSession from '@plone/volto/reducers/userSession/userSession';
-
-import ErrorPage from '@plone/volto/error';
-
-import languages from '@plone/volto/constants/Languages';
-
 import configureStore from '@plone/volto/store';
+import ErrorPage from '@plone/volto/error';
 import {
   ReduxAsyncConnect,
   loadOnServer,
@@ -61,10 +56,14 @@ function reactIntlErrorHandler(error) {
   debug('i18n')(error);
 }
 
-const supported = new locale.Locales(keys(languages), 'en');
+const supported = new locale.Locales(
+  config.settings?.supportedLanguages || ['en'],
+  'en',
+);
 
 const server = express()
   .disable('x-powered-by')
+  .set('etag', false)
   .head('/*', function (req, res) {
     // Support for HEAD requests. Required by start-test utility in CI.
     res.send('');
@@ -93,10 +92,16 @@ if (middleware.length) server.use('/', middleware);
 server.use(function (err, req, res, next) {
   if (err) {
     const { store } = res.locals;
+    const ErrorComponent =
+      config.getComponent('ErrorBoundary')?.component || null;
     const errorPage = (
       <Provider store={store} onError={reactIntlErrorHandler}>
         <StaticRouter context={{}} location={req.url}>
-          <ErrorPage message={err.message} />
+          {ErrorComponent ? (
+            <ErrorComponent error={err} />
+          ) : (
+            <ErrorPage message={err.message} />
+          )}
         </StaticRouter>
       </Provider>
     );
@@ -170,10 +175,16 @@ function setupServer(req, res, next) {
   const store = configureStore(initialState, history, api);
 
   function errorHandler(error) {
+    const ErrorComponent =
+      config.getComponent('ErrorBoundary').component || null;
     const errorPage = (
       <Provider store={store} onError={reactIntlErrorHandler}>
         <StaticRouter context={{}} location={req.url}>
-          <ErrorPage message={error.message} />
+          {ErrorComponent ? (
+            <ErrorComponent error={error} />
+          ) : (
+            <ErrorPage message={error.message} />
+          )}
         </StaticRouter>
       </Provider>
     );
@@ -283,7 +294,7 @@ server.get('/*', (req, res) => {
         : store.getState().content.data?.language?.token ||
           config.settings.defaultLanguage;
 
-      if (toBackendLang(initialLang) !== contentLang) {
+      if (toBackendLang(initialLang) !== contentLang && url !== '/') {
         const newLang = toReactIntlLang(
           new locale.Locales(contentLang).best(supported).toString(),
         );

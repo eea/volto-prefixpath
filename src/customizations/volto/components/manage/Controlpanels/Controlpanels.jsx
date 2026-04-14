@@ -3,7 +3,12 @@
  * @module components/manage/Controlpanels/Controlpanels
  */
 
-import { concat, filter, last, map, sortBy, uniqBy } from 'lodash';
+import concat from 'lodash/concat';
+import filter from 'lodash/filter';
+import last from 'lodash/last';
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
+import uniqBy from 'lodash/uniqBy';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';

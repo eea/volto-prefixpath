@@ -5,7 +5,9 @@
 
 import Cookies from 'universal-cookie';
 import jwtDecode from 'jwt-decode';
-import { compact, flatten, union } from 'lodash';
+import compact from 'lodash/compact';
+import flatten from 'lodash/flatten';
+import union from 'lodash/union';
 import { matchPath } from 'react-router';
 import qs from 'query-string';
 
@@ -21,8 +23,8 @@ import { changeLanguage } from '@plone/volto/actions/language/language';
 import {
   toGettextLang,
   toReactIntlLang,
-  getCookieOptions,
 } from '@plone/volto/helpers/Utils/Utils';
+import { getCookieOptions } from '@plone/volto/helpers/Cookies/cookies';
 let socket = null;
 
 /**
