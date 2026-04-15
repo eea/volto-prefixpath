@@ -3,7 +3,6 @@ import {
   listControlpanels,
 } from '@plone/volto/actions/controlpanels/controlpanels';
 import installPrefixPath from './middleware/prefixPath';
-import installHeroImageLeftBlock from './components/Blocks/HeroImageLeft';
 
 const applyConfig = (config) => {
   const prefixPath = process.env.RAZZLE_PREFIX_PATH;
@@ -69,11 +68,6 @@ const applyConfig = (config) => {
     ...config.settings.storeExtenders,
     installPrefixPath,
   ];
-
-  config = [installHeroImageLeftBlock].reduce(
-    (acc, apply) => apply(acc),
-    config,
-  );
 
   return config;
 };
