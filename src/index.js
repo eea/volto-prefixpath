@@ -1,4 +1,7 @@
-import { getSystemInformation, listControlpanels } from '@plone/volto/actions';
+import {
+  getSystemInformation,
+  listControlpanels,
+} from '@plone/volto/actions/controlpanels/controlpanels';
 import installPrefixPath from './middleware/prefixPath';
 
 const applyConfig = (config) => {
