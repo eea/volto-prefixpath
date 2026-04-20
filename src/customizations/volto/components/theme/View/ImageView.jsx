@@ -8,11 +8,11 @@ import PropTypes from 'prop-types';
 import { Container as SemanticContainer } from 'semantic-ui-react';
 import { FormattedMessage } from 'react-intl';
 import prettybytes from 'pretty-bytes';
-import { flattenToAppURL } from '@plone/volto/helpers';
-import { addPrefixPath } from '@plone/volto/helpers/Url/Url';
+import { flattenToAppURL } from '@plone/volto/helpers/Url/Url';
+import { addPrefixPath } from '../../../helpers/Url/Url';
 import config from '@plone/volto/registry';
 
-import Image from '@eeacms/volto-prefixpath/components/Image/Image';
+import Image from '@plone/volto/components/theme/Image/Image';
 
 /**
  * Image view component class.

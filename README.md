@@ -3,16 +3,16 @@
 [![Releases](https://img.shields.io/github/v/release/eea/volto-prefixpath)](https://github.com/eea/volto-prefixpath/releases)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-prefixpath%2Fmaster&subject=master)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-prefixpath/job/master/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-master&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-master)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-master&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-master)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-master&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-master)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-master&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-master)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath)
 
 [![Pipeline](https://ci.eionet.europa.eu/buildStatus/icon?job=volto-addons%2Fvolto-prefixpath%2Fdevelop&subject=develop)](https://ci.eionet.europa.eu/view/Github/job/volto-addons/job/volto-prefixpath/job/develop/display/redirect)
-[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-develop)
-[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-develop)
-[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-develop)
-[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath-develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath-develop)
+[![Lines of Code](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&branch=develop&metric=ncloc)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath&branch=develop)
+[![Coverage](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&branch=develop&metric=coverage)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath&branch=develop)
+[![Bugs](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&branch=develop&metric=bugs)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath&branch=develop)
+[![Duplicated Lines (%)](https://sonarqube.eea.europa.eu/api/project_badges/measure?project=volto-prefixpath&branch=develop&metric=duplicated_lines_density)](https://sonarqube.eea.europa.eu/dashboard?id=volto-prefixpath&branch=develop)
 
 [Volto](https://github.com/plone/volto) add-on
 
