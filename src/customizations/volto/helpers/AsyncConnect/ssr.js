@@ -9,6 +9,10 @@ export function isPromise(obj) {
 export function stripSubpathPrefix(src) {
   let url = src;
   const { prefixPath } = config.settings;
+  //do not strip prefix if the path is controlpanel, this is required for correct asyncPropsExtenders matching
+  if (prefixPath && src.startsWith(`${prefixPath}/controlpanel`)) {
+    return src;
+  }
   if (prefixPath && src.match(new RegExp(`^${prefixPath}(/|$)`))) {
     url = src.slice(prefixPath.length);
   }
