@@ -87,7 +87,9 @@ if (process.env.RAZZLE_PREFIX_PATH) {
 const middleware = (config.settings.expressMiddleware || []).filter((m) => m);
 
 server.all('*', setupServer);
-if (middleware.length) server.use('/', middleware);
+if (middleware.length) {
+  server.use(config.settings.prefixPath || '/', middleware);
+}
 
 server.use(function (err, req, res, next) {
   if (err) {
@@ -209,8 +211,10 @@ function setupServer(req, res, next) {
     res.locals.detectedHost = `${
       req.headers['x-forwarded-proto'] || req.protocol
     }://${req.headers.host}`;
-    config.settings.apiPath = res.locals.detectedHost;
-    config.settings.publicURL = res.locals.detectedHost;
+    config.settings.apiPath =
+      res.locals.detectedHost + config.settings.prefixPath;
+    config.settings.publicURL =
+      res.locals.detectedHost + config.settings.prefixPath;
   }
 
   res.locals = {
@@ -307,7 +311,11 @@ server.get('/*', (req, res) => {
         <ChunkExtractorManager extractor={extractor}>
           <CookiesProvider cookies={req.universalCookies}>
             <Provider store={store} onError={reactIntlErrorHandler}>
-              <StaticRouter context={context} location={req.url}>
+              <StaticRouter
+                context={context}
+                location={req.url}
+                basename={config.settings.prefixPath}
+              >
                 <ReduxAsyncConnect routes={routes} helpers={api} />
               </StaticRouter>
             </Provider>
@@ -347,10 +355,8 @@ server.get('/*', (req, res) => {
                     process.env.NODE_ENV !== 'production'
                   }
                   criticalCss={readCriticalCss(req)}
-                  apiPath={res.locals.detectedHost || config.settings.apiPath}
-                  publicURL={
-                    res.locals.detectedHost || config.settings.publicURL
-                  }
+                  apiPath={config.settings.apiPath}
+                  publicURL={config.settings.publicURL}
                 />,
               )}
             `,
@@ -365,10 +371,8 @@ server.get('/*', (req, res) => {
                   markup={markup}
                   store={store}
                   criticalCss={readCriticalCss(req)}
-                  apiPath={res.locals.detectedHost || config.settings.apiPath}
-                  publicURL={
-                    res.locals.detectedHost || config.settings.publicURL
-                  }
+                  apiPath={config.settings.apiPath}
+                  publicURL={config.settings.publicURL}
                 />,
               )}
             `,

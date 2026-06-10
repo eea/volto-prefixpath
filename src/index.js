@@ -1,12 +1,31 @@
+import { parse as parseUrl } from 'url';
 import {
   getSystemInformation,
   listControlpanels,
 } from '@plone/volto/actions/controlpanels/controlpanels';
 import installPrefixPath from './middleware/prefixPath';
 
+const getServerURL = (url) => {
+  if (!url) return;
+  const apiPathURL = parseUrl(url);
+  return `${apiPathURL.protocol}//${apiPathURL.hostname}${
+    apiPathURL.port ? `:${apiPathURL.port}` : ''
+  }`;
+};
+
+const publicURL =
+  (process.env.RAZZLE_PUBLIC_URL ||
+    (__DEVELOPMENT__
+      ? `http://${host}:${port}`
+      : getServerURL(process.env.RAZZLE_API_PATH) ||
+        `http://${host}:${port}`)) + (process.env.RAZZLE_PREFIX_PATH || '');
+
 const applyConfig = (config) => {
   const prefixPath = process.env.RAZZLE_PREFIX_PATH;
   config.settings.prefixPath = prefixPath;
+  config.settings.publicURL = publicURL;
+  config.settings.apiPath = process.env.RAZZLE_API_PATH || publicURL;
+
   if (prefixPath) {
     const ControlPanelAsyncPropExtender = {
       path: `${prefixPath}/controlpanel`,
