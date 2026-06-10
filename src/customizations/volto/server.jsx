@@ -87,9 +87,7 @@ if (process.env.RAZZLE_PREFIX_PATH) {
 const middleware = (config.settings.expressMiddleware || []).filter((m) => m);
 
 server.all('*', setupServer);
-if (middleware.length) {
-  server.use(config.settings.prefixPath || '/', middleware);
-}
+if (middleware.length) server.use('/', middleware);
 
 server.use(function (err, req, res, next) {
   if (err) {
@@ -311,11 +309,7 @@ server.get('/*', (req, res) => {
         <ChunkExtractorManager extractor={extractor}>
           <CookiesProvider cookies={req.universalCookies}>
             <Provider store={store} onError={reactIntlErrorHandler}>
-              <StaticRouter
-                context={context}
-                location={req.url}
-                basename={config.settings.prefixPath}
-              >
+              <StaticRouter context={context} location={req.url}>
                 <ReduxAsyncConnect routes={routes} helpers={api} />
               </StaticRouter>
             </Provider>
@@ -355,8 +349,10 @@ server.get('/*', (req, res) => {
                     process.env.NODE_ENV !== 'production'
                   }
                   criticalCss={readCriticalCss(req)}
-                  apiPath={config.settings.apiPath}
-                  publicURL={config.settings.publicURL}
+                  apiPath={res.locals.detectedHost || config.settings.apiPath}
+                  publicURL={
+                    res.locals.detectedHost || config.settings.publicURL
+                  }
                 />,
               )}
             `,
@@ -371,8 +367,10 @@ server.get('/*', (req, res) => {
                   markup={markup}
                   store={store}
                   criticalCss={readCriticalCss(req)}
-                  apiPath={config.settings.apiPath}
-                  publicURL={config.settings.publicURL}
+                  apiPath={res.locals.detectedHost || config.settings.apiPath}
+                  publicURL={
+                    res.locals.detectedHost || config.settings.publicURL
+                  }
                 />,
               )}
             `,
