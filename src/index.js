@@ -12,6 +12,8 @@ const getServerURL = (url) => {
     apiPathURL.port ? `:${apiPathURL.port}` : ''
   }`;
 };
+const host = process.env.HOST || 'localhost';
+const port = process.env.PORT || 3000;
 
 const publicURL =
   (process.env.RAZZLE_PUBLIC_URL ||
