@@ -57,9 +57,7 @@ export function loadAsyncConnect({
   filter = () => true,
   ...rest
 }) {
-  const layered = filterComponents(
-    matchRoutes(routes, stripSubpathPrefix(location.pathname)),
-  );
+  const layered = filterComponents(matchRoutes(routes, location.pathname));
 
   if (layered.length === 0) {
     return Promise.resolve();
