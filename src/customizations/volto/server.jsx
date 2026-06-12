@@ -209,10 +209,8 @@ function setupServer(req, res, next) {
     res.locals.detectedHost = `${
       req.headers['x-forwarded-proto'] || req.protocol
     }://${req.headers.host}`;
-    config.settings.apiPath =
-      res.locals.detectedHost + config.settings.prefixPath;
-    config.settings.publicURL =
-      res.locals.detectedHost + config.settings.prefixPath;
+    config.settings.apiPath = res.locals.detectedHost;
+    config.settings.publicURL = res.locals.detectedHost;
   }
 
   res.locals = {
