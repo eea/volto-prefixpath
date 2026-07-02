@@ -69,10 +69,10 @@ class Api {
           let authToken;
           if (req) {
             // We are in SSR
-            authToken = req.universalCookies.get('auth_token');
+            authToken = req.universalCookies.get('auth_token'); //betterleaks:allow
             request.use(addHeadersFactory(req));
           } else {
-            authToken = cookies.get('auth_token');
+            authToken = cookies.get('auth_token'); //betterleaks:allow
           }
           if (authToken) {
             request.set('Authorization', `Bearer ${authToken}`);
