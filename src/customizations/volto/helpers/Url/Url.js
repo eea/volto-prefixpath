@@ -161,7 +161,21 @@ export function stripQuerystring(url) {
  */
 export function toPublicURL(url) {
   const { settings } = config;
-  return settings.publicURL.concat(flattenToAppURL(url));
+  const { publicURL, prefixPath } = settings;
+  let flattened = flattenToAppURL(url);
+  // flattenToAppURL (patched to prepend prefixPath) may have already added the
+  // prefix while publicURL already ends with it, e.g. for a site served under
+  // /freshwater with publicURL=https://water.europa.eu/freshwater and
+  // prefixPath=/freshwater. Strip it once to avoid doubled URLs like
+  // https://water.europa.eu/freshwater/freshwater/sitemap1.xml.gz
+  if (
+    prefixPath &&
+    publicURL?.endsWith(prefixPath) &&
+    flattened?.startsWith(prefixPath)
+  ) {
+    flattened = flattened.slice(prefixPath.length) || '/';
+  }
+  return publicURL.concat(flattened);
 }
 
 /**
