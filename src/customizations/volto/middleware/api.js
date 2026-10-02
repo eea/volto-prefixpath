@@ -20,7 +20,6 @@ import {
   SET_APIERROR,
 } from '@plone/volto/constants/ActionTypes';
 import { changeLanguage } from '@plone/volto/actions/language/language';
-import { updateUploadedFiles } from '@plone/volto/actions/content/content';
 import {
   toGettextLang,
   toReactIntlLang,
@@ -145,7 +144,6 @@ const apiMiddlewareFactory =
 
     const state = getState();
     const token = state.userSession.token;
-    let uploadedFiles = state.content.uploadedFiles;
     let isAnonymous = true;
     if (token) {
       const tokenExpiration = jwtDecode(token).exp;
@@ -202,9 +200,6 @@ const apiMiddlewareFactory =
                     attach: item.attach,
                   },
                 ).then((reqres) => {
-                  if (action.subrequest === 'batch-upload') {
-                    dispatch(updateUploadedFiles(++uploadedFiles));
-                  }
                   return [...acc, reqres];
                 });
               });
@@ -234,9 +229,6 @@ const apiMiddlewareFactory =
       actionPromise.then(
         (result) => {
           isHydrating = false;
-          if (uploadedFiles !== 0) {
-            dispatch(updateUploadedFiles(0));
-          }
 
           const { settings } = config;
           const state = getState();
