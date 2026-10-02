@@ -44,10 +44,13 @@ let socket = null;
  */
 export function addExpandersToPath(path, type, isAnonymous) {
   const { settings } = config;
+  // The prefix path is not part of the content path, strip it before
+  // matching the configured apiExpanders and querying the API.
   let pathname = path;
   const { apiExpanders = [], prefixPath } = settings;
-  if (prefixPath && path.match(new RegExp(`^${prefixPath}(/|$)`)))
+  if (prefixPath && path.match(new RegExp(`^${prefixPath}(/|$)`))) {
     pathname = path?.slice(prefixPath.length);
+  }
 
   const {
     url,
@@ -72,7 +75,15 @@ export function addExpandersToPath(path, type, isAnonymous) {
 
   const querystringFromConfig = apiExpanders
     .filter((expand) => matchPath(url, expand.match) && expand[type])
-    .reduce((acc, expand) => ({ ...acc, ...expand?.['querystring'] }), {});
+    .reduce((acc, expand) => {
+      let querystring = expand?.['querystring'];
+      // The querystring accepts being a function to be able to take other
+      // config parameters
+      if (typeof querystring === 'function') {
+        querystring = querystring(config, acc);
+      }
+      return { ...acc, ...querystring };
+    }, {});
 
   const queryMerge = { ...query, ...querystringFromConfig };
 
@@ -122,6 +133,8 @@ function sendOnSocket(request) {
  * @param {Object} api Api object.
  * @returns {Promise} Action promise.
  */
+let isHydrating = __CLIENT__ ? true : false;
+
 const apiMiddlewareFactory =
   (api) =>
   ({ dispatch, getState }) =>
@@ -129,7 +142,15 @@ const apiMiddlewareFactory =
   (action) => {
     const { settings } = config;
 
-    const isAnonymous = !getState().userSession.token;
+    const state = getState();
+    const token = state.userSession.token;
+    let isAnonymous = true;
+    if (token) {
+      const tokenExpiration = jwtDecode(token).exp;
+      const currentTime = new Date().getTime() / 1000;
+      isAnonymous = !token || currentTime > tokenExpiration;
+    }
+    const hasExistingError = state.content.get?.error;
 
     if (typeof action === 'function') {
       return action(dispatch, getState);
@@ -145,7 +166,6 @@ const apiMiddlewareFactory =
     }
 
     next({ ...rest, type: `${type}_PENDING` });
-
     if (socket) {
       actionPromise = Array.isArray(request)
         ? Promise.all(
@@ -177,6 +197,7 @@ const apiMiddlewareFactory =
                     checkUrl: settings.actions_raising_api_errors.includes(
                       action.type,
                     ),
+                    attach: item.attach,
                   },
                 ).then((reqres) => {
                   return [...acc, reqres];
@@ -193,6 +214,7 @@ const apiMiddlewareFactory =
                   checkUrl: settings.actions_raising_api_errors.includes(
                     action.type,
                   ),
+                  attach: item.attach,
                 }),
               ),
             )
@@ -202,11 +224,15 @@ const apiMiddlewareFactory =
             headers: request.headers,
             params: request.params,
             checkUrl: settings.actions_raising_api_errors.includes(action.type),
+            attach: request.attach,
           });
       actionPromise.then(
         (result) => {
+          isHydrating = false;
+
           const { settings } = config;
-          if (getState().apierror.connectionRefused) {
+          const state = getState();
+          if (state.apierror.connectionRefused) {
             next({
               ...rest,
               type: RESET_APIERROR,
@@ -216,18 +242,19 @@ const apiMiddlewareFactory =
             const lang = result?.language?.token;
             if (
               lang &&
-              getState().intl.locale !== toReactIntlLang(lang) &&
+              state.intl.locale !== toReactIntlLang(lang) &&
               !subrequest &&
               config.settings.supportedLanguages.includes(lang)
             ) {
               const langFileName = toGettextLang(lang);
-              import('~/../locales/' + langFileName + '.json').then(
-                (locale) => {
-                  dispatch(changeLanguage(lang, locale.default));
-                },
-              );
+              import(
+                /* @vite-ignore */ '@root/../locales/' + langFileName + '.json'
+              ).then((locale) => {
+                dispatch(changeLanguage(lang, locale.default));
+              });
             }
           }
+
           if (type === LOGIN && settings.websockets) {
             const cookies = new Cookies();
             cookies.set(
@@ -274,8 +301,21 @@ const apiMiddlewareFactory =
           }
         },
         (error) => {
+          // Make sure an error during hydration
+          // (for example when serving an archived page)
+          // doesn't hide the SSR content. Only suppress GET_CONTENT failures;
+          // user-initiated actions (LOGIN, etc.) must always dispatch _FAIL so
+          // loaders stop and errors surface.
+          const shouldIgnoreHydrationError =
+            isHydrating && !hasExistingError && type === GET_CONTENT;
+
+          if (shouldIgnoreHydrationError) {
+            isHydrating = false;
+            return;
+          }
+
           // Only SSR can set ECONNREFUSED
-          if (error.code === 'ECONNREFUSED') {
+          if (error?.code === 'ECONNREFUSED') {
             next({
               ...rest,
               error,
@@ -286,7 +326,7 @@ const apiMiddlewareFactory =
           }
 
           // Response error is marked crossDomain if CORS error happen
-          else if (error.crossDomain) {
+          else if (error?.crossDomain) {
             next({
               ...rest,
               error,
@@ -337,7 +377,7 @@ const apiMiddlewareFactory =
                 ...rest,
                 error,
                 statusCode: error.response,
-                message: error.response.body.message,
+                message: error.response?.body?.message,
                 connectionRefused: false,
                 type: SET_APIERROR,
               });
