@@ -59,9 +59,19 @@ const applyConfig = (config) => {
   //   ];
   // }
 
-  // do not expand breadcrumbs
-  config.settings.apiExpanders = [...config.settings.apiExpanders].filter(
-    (item) => !item.GET_CONTENT.includes('breadcrumbs'),
+  // Do not expand breadcrumbs, but keep the other expanders that ship in the
+  // same entry (`actions`, `types`, `navroot`). Removing the whole entry makes
+  // Volto issue separate requests to /@breadcrumbs, /@types, ... for every
+  // content url. On a moved/renamed path those sub-requests 404, and the
+  // auth-only /@types one rejects without a handler and crashes the SSR
+  // process (the pod then goes down and Varnish answers 503).
+  config.settings.apiExpanders = config.settings.apiExpanders.map((item) =>
+    Array.isArray(item.GET_CONTENT) && item.GET_CONTENT.includes('breadcrumbs')
+      ? {
+          ...item,
+          GET_CONTENT: item.GET_CONTENT.filter((e) => e !== 'breadcrumbs'),
+        }
+      : item,
   );
 
   config.settings.storeExtenders = [
