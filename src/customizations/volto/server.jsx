@@ -40,6 +40,15 @@ import {
   loadOnServer,
 } from '@plone/volto/helpers/AsyncConnect';
 
+// A single failed (background) API request during SSR must never take down the
+// whole frontend pod. Some asyncConnect sub-requests (e.g. /@types on a
+// moved/renamed path) can reject without a handler; if that reaches Node's
+// default handler the process exits, the pod restarts and Varnish starts
+// answering 503 for everything. Log it and keep serving instead.
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled promise rejection during SSR:', reason);
+});
+
 let locales = {};
 const isCSP = process.env.CSP_HEADER || config.settings.serverConfig.csp;
 
